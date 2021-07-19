@@ -1,0 +1,91 @@
+@import 'variable';
+
+* {
+    box-sizing: border-box;
+}
+
+html , body {
+    @include size(100%, 100vh);
+    @include flex(center, center);
+    margin: 0;
+    padding: 0;
+    background-color: #222;
+}
+
+.card {
+    @include size(800px, 500px, 15px);
+    background-color:#FFE153;
+    position: relative;
+    box-shadow: 0 5px 5px black;
+
+    .moon {
+        @include size(80px, 80px, 50%);
+        // background-color:yellow;
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        &.boxShadow {
+            box-shadow: inset -10px 0px #fff;
+            animation: moon1 5s both steps(10) infinite;
+        }
+
+        @keyframes moon1 {
+            to {
+              box-shadow: inset -110px 0px #FFE153;
+            }
+        }
+    }
+
+    .moon-name{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem;
+        color: #fff;
+    }
+
+    .allstars {
+        @include size(100%, 100%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+
+        @keyframes snowing {
+			0%, 100% {
+				opacity: 0;
+			}
+
+			60% {
+				opacity: 1;
+			}
+
+			0% {
+				transform: translate(100px, 0);
+			}
+
+			100% {
+				transform: translate(0, 350px);
+			}
+        }
+
+
+        @for $i from 1 to 31 {
+			.star#{$i} {
+				@include size(5px, 10px, 50%);
+				background-color: rgb(random(255), random(255), random(255));
+                position: absolute;
+                top: random() * 30%, ;
+                left: random() * 600px;
+
+				animation-name:snowing;
+				animation-delay: 2s;
+				animation-duration: random() * 10s;
+				animation-iteration-count: infinite;
+			}
+		}
+    }
+}
+

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: #eecda3;
+            background: -webkit-linear-gradient(to right, #eecda3, #ef629f);
+            background: linear-gradient(to right, #eecda3, #ef629f);
+            min-height: 100vh;
+        }
+
+        .product .action-box {
+            display: flex;
+            padding: 10px 10px 10px 15px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product .action-box .round {
+            width: 30px;
+            height: 30px;
+            outline: 0;
+            border: 0;
+            color: #fff;
+            font-size: 18px;
+            background: #c3c3c3;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .product .action-box span {
+            display: inline-block;
+            width: 2em;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .product .action-box > button {
+            outline: 0;
+            border: 0;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            text-transform: uppercase;
+            background: #ef8a8b;
+            cursor: pointer;
+        }
+
+        .checkout {
+            display: block;
+            width: calc(100% - 2 * 20px);
+            margin: 20px;
+            outline: 0;
+            border: 0;
+            padding: 15px 0;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            background-color: #ef8a8b;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .icon-container {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            padding: 30px 20px 0;
+            color: #ef8a8b;
+            font-size: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .icon-container .circle,
+        .icon-container .check {
+            fill: none;
+            stroke: #ef8a8b;
+            stroke-width: 3;
+        }
+
+        .icon-container .check {
+            stroke-dasharray: 80 100;
+            stroke-dashoffset: 80;
+        }
+
+        .icon-container.showing {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .icon-container.showing .check {
+            -webkit-animation: check 0.3s cubic-bezier(0.5, 0, 0.6, 1) forwards 0.2s;
+            animation: check 0.3s cubic-bezier(0.5, 0, 0.6, 1) forwards 0.2s;
+        }
+        
+
+        table tbody .button-del {
+            width: 30px;
+            height: 30px;
+            outline: 0;
+            border: 0;
+            padding: 0 0 0.4em;
+            color: #b6b6b6;
+            font-size: 18px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        @media (max-width: 550px) {
+            .table td, .table th {
+                padding: 5px;
+            }
+
+            h2 {
+                font-size: 15px;
+            }
+        }
+        
+        @-webkit-keyframes check {
+            from {
+                stroke-dashoffset: 80;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes check {
+            from {
+                stroke-dashoffset: 80;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @-webkit-keyframes circle {
+            from {
+                stroke-dashoffset: -300;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes circle {
+            from {
+                stroke-dashoffset: -300;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="px-4 px-lg-0">
+            <!-- For demo purpose -->
+            <div class="container text-white py-5 text-center">
+                <h1 class="display-4">Shopping cart</h1>
+            </div>
+            <!-- End -->
+    
+            <div class="phone pb-5" id="app">
+                <div class="container">
+                    
+                    <div class="col-lg-12 p-5 bg-white rounded  mb-5 product" v-for="product in products">
+                        <div class="d-flex">
+                            <img :src="product.thumb" class="mr-5" style="width: 100px;height: 100px;"/>
+                            <div>
+                                <h2>{{ product.name }}</h2>
+                                <p>${{ product.price }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="action-box">
+                            <div>
+                                <button class="round" @click="minusOne(product)">-</button>
+                                <span>{{ product.amountShow }}</span>
+                                <button class="round" @click="addOne(product)">+</button>
+                            </div>
+                            <button @click="addToCart(product)">add to cart</button>
+                        </div>
+                        <!-- 購物成功的 icon -->
+                        <div class="icon-container" :class="{ showing: product.showingIcon }">
+                            <svg class="icon" viewBox="0 0 100 100" width="80" height="80">
+                                <circle class="circle" cx="50" cy="50" r="48"></circle>
+                                <polyline class="check" points="28,53 42,66 74,34"></polyline>
+                            </svg>
+                            <p>成功加入購物車</p>
+                        </div>
+                    </div>
+                    <!-- End -->
+                    
+    
+                    <div class="row py-5 p-4 bg-white rounded shadow-sm">
+                        <!-- 購物清單 -->
+                        <div class="content col-12">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <tr>
+                                        <th colspan="5" style="border: 0;">Order</th>
+                                    </tr>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-title">
+                                        <td>品項</td>
+                                        <td>數量</td>
+                                        <td>單價</td>
+                                        <td>小計</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr v-for="product in productsInCart">
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.amount }}</td>
+                                        <td>{{ product.price }}</td>
+                                        <td>{{ product.sum }}</td>
+                                        <td>
+                                            <button class="button-del" @click="remove(product)">×</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3" class="text-right">Total <span class="total-price">$ {{ total }}</span></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                              </table>
+                            <button class="checkout">前往付款</button>
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                isShowingCart: false,
+                products: [
+                    {
+                        id: '2062',
+                        name: '霧光底妝柚子潔顏小資明星組',
+                        price: 2900,
+                        thumb: 'https://shoplineimg.com/5a8293389f9a4f3b09000791/60dafb23213bae001d2fa832/400x.webp?source_format=jpg%22',
+                        amount: 0,
+                        amountShow: 1,
+                        showingIcon: false
+                    }, {
+                        id: '832',
+                        name: '青木定治限量聯名彩妝 無色限唇膏"',
+                        price: 1350,
+                        thumb: 'https://shoplineimg.com/5a8293389f9a4f3b09000791/606d5f7c797db6003b6599a2/400x.webp?source_format=jpg',
+                        amount: 0,
+                        amountShow: 1,
+                        showingIcon: false
+                    }, {
+                        id: '16762',
+                        name: '無極限超時輕粉底',
+                        price: 850,
+                        thumb: 'https://shoplineimg.com/5a8293389f9a4f3b09000791/5f2a90adf6afda0048ead8a4/400x.webp?source_format=jpg',
+                        amount: 0,
+                        amountShow: 1,
+                        showingIcon: false
+                    }, {
+                        id: '145',
+                        name: '無色限柔霧唇釉',
+                        price: 2100,
+                        thumb: 'https://shoplineimg.com/5a8293389f9a4f3b09000791/6093a39346cd59001d949eb7/400x.webp?source_format=jpg',
+                        amount: 0,
+                        amountShow: 1,
+                        showingIcon: false
+                    }, {
+                        id: '103',
+                        name: '星鑽漾采眼影',
+                        price: 2600,
+                        thumb: 'https://s.pimg.tw/album/styleme/element/62032760_1471833970-3752241194/sresize/380x380.jpg',
+                        amount: 0,
+                        amountShow: 1,
+                        showingIcon: false
+                    }, {
+                        id: '16717',
+                        name: '柚子精萃潔顏油 450ml',
+                        price: 2150,
+                        thumb: 'https://shoplineimg.com/5a8293389f9a4f3b09000791/5f1e4d52eb052703589ac022/400x.webp?source_format=jpg',
+                        amount: 0,
+                        amountShow: 1,
+                        showingIcon: false
+                    }
+                ]
+            },
+            methods: {
+                // 切換 產品列表 / 購物車 的 tab
+                toggleTab(shouldShowCart) {
+                    this.isShowingCart = shouldShowCart
+                },
+
+                // 點擊 - / + 後的動作
+                minusOne(product) {
+                    product.amountShow--
+                    product.amountShow = (product.amountShow < 1) ? 1 : product.amountShow
+                },
+                addOne(product) {
+                    product.amountShow++
+                    product.amountShow = (product.amountShow > 9) ? 9 : product.amountShow
+                },
+
+                // 點擊 add to cart 後的動作
+                addToCart(product) {
+                    product.amount += product.amountShow
+
+                    product.showingIcon = true
+                    setTimeout(() => {
+                        product.showingIcon = false
+                    }, 800)
+                },
+
+                // 在購物車裡移除單一品項 ( 把數量設置成 0 )
+                remove(product) {
+                    product.amount = 0
+                },
+            },
+            computed: {
+                // 購物車裡的品項
+                productsInCart() {
+                    return this.products
+                        // 只顯示購買數量 > 0 的項目
+                        .filter(p => p.amount)
+                        // 算出每個產品的小計
+                        .map(p => {
+                            p.sum = p.amount * p.price
+                            return p
+                        })
+                },
+
+                // 木前購買的金額
+                total() {
+                    return this.productsInCart
+                        .reduce((sum, p) => (sum + p.sum), 0)
+                }
+            },
+        })
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

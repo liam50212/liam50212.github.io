@@ -1,0 +1,96 @@
+.block .box .btn-blue, .block .box .btn-red, .block .box .btn-yellow {
+  width: 100px;
+  height: 20px;
+  border-radius: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+}
+
+.block {
+  width: 600px;
+  height: 600px;
+  border-radius: 0;
+  border: 1px solid #000;
+  opacity: 1;
+}
+
+.block:hover {
+  background-color: #f9f900;
+}
+
+.block:hover .box {
+  background-color: #ff0000;
+}
+
+.block .box {
+  width: 100px;
+  height: 100px;
+  border-radius: 0;
+  border: 1px solid #000;
+  border-top: solid 3px #006000;
+  border-bottom: solid 3px #921aff;
+  background-color: #000;
+  background-size: 100%;
+}
+
+.block .box .btn-blue {
+  background-color: #32a8a8;
+}
+
+.block .box .btn-blue:hover {
+  background-color: #94dfdf;
+}
+
+.block .box .btn-red {
+  background-color: #c51b40;
+}
+
+.block .box .btn-yellow {
+  background-color: #a4ca3d;
+}
+
+.block ul .list-item:nth-of-type(1) {
+  width: 10px;
+  height: 100px;
+  border-radius: 0;
+  border: solid 1px #000;
+}
+
+.block ul .list-item:nth-of-type(2) {
+  width: 143px;
+  height: 100px;
+  border-radius: 0;
+  border: solid 1px #000;
+}
+
+.block ul .list-item:nth-of-type(3) {
+  width: 3px;
+  height: 100px;
+  border-radius: 0;
+  border: solid 1px #000;
+}
+
+.block ul .list-item:nth-of-type(4) {
+  width: 250px;
+  height: 100px;
+  border-radius: 0;
+  border: solid 1px #000;
+}
+
+.block ul .list-item:nth-of-type(5) {
+  width: 383px;
+  height: 100px;
+  border-radius: 0;
+  border: solid 1px #000;
+}
+/*# sourceMappingURL=style.css.map */

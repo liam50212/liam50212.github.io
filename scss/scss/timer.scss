@@ -1,0 +1,53 @@
+* {
+    box-sizing: border-box;
+}
+
+body , html {
+    margin: 0;
+    padding: 0;
+}
+
+.load-page {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100vh;
+    background-color: palevioletred;
+    transition-duration: 1s;
+    box-shadow: 0 10px 5px black;
+
+    &.complate {
+        opacity: 0;
+    }
+    
+
+    .progress {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-size: 1.5rem;
+        line-height: 3rem;
+        // background-color: purple;
+    }
+
+    .loadbar {
+        position: relative;
+        width: 300px;
+        height: 30px;
+        border-radius: 15px;
+        background-color: #fff;
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 99%;
+            height: 90%;
+            border-radius: 15px;
+            background-color: rgb(19, 100, 175);
+        }
+    }
+}
